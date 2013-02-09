@@ -109,6 +109,7 @@ function MyCtrl3( $rootScope, $scope ) {
         else {
             $(document).keydown(tabListener);
         }
+        currentFocusElemIndex = 0;
 
 
     })
