@@ -1,1 +1,5 @@
 .accordion-body.in { overflow:visible; }
+
+.focused {
+    background-color: #d9edf7;
+}
