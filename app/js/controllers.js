@@ -113,9 +113,33 @@ function MyCtrl3( $rootScope, $scope ) {
 
 
     })
+
+
+    var addClickFocusListenersToIds = function() {
+        var i = 0,
+            maxLength = ids.length;
+
+        for ( i ; i < maxLength ; i++ )
+        {
+            $("#"+ids[i]).addEventListener("click", function(){
+                clearFocus()
+
+            })
+        }
+    }
+
     $(document).keydown(tabListener);
 
 
 }
 MyCtrl3.$inject = ['$rootScope', '$scope'];
+
+
+function MyCtrl4($scope) {
+
+    $scope.items = [ 1, 2, 3, 4, 5, 6, 7];
+
+}
+MyCtrl4.$inject = ['$scope'];
+
 

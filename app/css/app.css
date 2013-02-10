@@ -3,3 +3,11 @@
 .focused {
     background-color: #d9edf7;
 }
+
+
+.collapsible {
+    height: 0;
+    max-height: 9999px;
+    overflow: hidden;
+    -webkit-transition: height 1s ease-out;
+}

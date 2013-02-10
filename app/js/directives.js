@@ -3,7 +3,8 @@
 /* Directives */
 
 
-angular.module('myApp.directives', []).directive('editableDropdown', function () {
+angular.module('myApp.directives', [])
+    .directive('editableDropdown', function () {
     return {
         restrict:'E',
         replace:true,
@@ -41,4 +42,35 @@ angular.module('myApp.directives', []).directive('editableDropdown', function ()
     return function(scope, elm, attrs) {
       elm.text(version);
     };
-  }]);
+  }])
+    .directive('collapsibleSection', function() {
+
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl:"directive/collapsible-section-template.html",
+        scope: {
+            id:"="
+        },
+        controller: function($scope) {
+
+            $scope.toggle = function() {
+                if( $scope.collapsibleItemStyle.height == '170px' )
+                {
+                    $scope.collapsibleItemStyle = {height: '0px'}
+                }
+                else
+                {
+                    $scope.collapsibleItemStyle = {height: '170px'}
+                }
+            }
+
+            $scope.collapsibleItemStyle = {height :'0px'};
+
+        },
+        link:function (scope, element, attrs) {
+
+        }
+    }
+
+});
