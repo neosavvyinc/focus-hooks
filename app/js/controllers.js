@@ -142,4 +142,7 @@ function MyCtrl4($scope) {
 }
 MyCtrl4.$inject = ['$scope'];
 
+function MyCtrl5($scope) {
+}
+MyCtrl5.$inject = ['$scope'];
 

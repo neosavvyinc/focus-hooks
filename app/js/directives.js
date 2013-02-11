@@ -73,4 +73,35 @@ angular.module('myApp.directives', [])
         }
     }
 
-});
+}).directive('focusGroup', function( focusManager ) {
+
+        return {
+            restrict: 'A',
+            replace: true,
+            scope: {
+                focusGroup:"="
+            },
+            controller: function($scope) {
+
+                $scope.focusGroups = [];
+
+
+            },
+            link:function (scope, element, attrs, controller) {
+                console.log("focus group: " + scope.focusGroup);
+                console.log("id: " + attrs.id);
+
+                if( focusManager.hasGroup(scope.focusGroup) ) {
+                    focusManager.addItemToGroup( scope.focusGroup, element );
+                }
+                else
+                {
+                    focusManager.addGroup( scope.focusGroup );
+                    focusManager.addItemToGroup( scope.focusGroup, element );
+                }
+
+                focusManager.dumpGroups();
+            }
+        }
+
+    });
