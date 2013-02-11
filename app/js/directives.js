@@ -73,7 +73,8 @@ angular.module('myApp.directives', [])
         }
     }
 
-}).directive('focusGroup', function( focusManager ) {
+    })
+    .directive('focusGroup', function( focusManager ) {
 
         return {
             restrict: 'A',
@@ -104,4 +105,38 @@ angular.module('myApp.directives', [])
             }
         }
 
-    });
+    })
+    .directive('focusGroupManager', function( focusManager ) {
+
+        return {
+            restrict: 'EA',
+            replace: true,
+            scope: {
+                managedGroup:"="
+            },
+            link:function (scope, element, attrs) {
+
+                var tabListener = function(){
+                    var code;
+                    var isShift = event.shiftKey ? true : false;
+
+                    if (event.which) {
+                        code = event.which;
+                    }
+
+                    if( code == 9 && isShift ) {
+                        focusManager.reverseFocus(scope.managedGroup);
+                        event.preventDefault();
+                    }
+                    else if( code == 9 ) {
+                        focusManager.forwardFocus(scope.managedGroup);
+                        event.preventDefault();
+                    }
+                }
+
+                $(document).keydown(tabListener);
+
+            }
+        }
+
+    });;

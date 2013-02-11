@@ -12,6 +12,8 @@ services.factory("focusManager", function () {
 
     var focusGroups = {
     };
+    var currentFocusItemIndex = {
+    };
 
     return {
         hasGroup: function( focusGroup ) {
@@ -31,6 +33,12 @@ services.factory("focusManager", function () {
             var lengthOfFocusGroup = focusGroups[focusGroup].length;
             focusGroups[focusGroup][lengthOfFocusGroup] = element;
 
+        },
+        forwardFocus: function( focusGroup ) {
+            console.log("forwarding focus");
+        },
+        reverseFocus: function( focusGroup ) {
+            console.log("reversing focus");
         },
         dumpGroups: function() {
 
