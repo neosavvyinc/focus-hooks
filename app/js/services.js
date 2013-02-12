@@ -38,7 +38,7 @@ services.factory("focusManager", function () {
 
         var itemToFocus = focusGroups[currentGroup][currentItemToFocus];
         itemToFocus.addClass('focused');
-
+        focusOnFirstFocusableItem(itemToFocus);
 
     }
 
@@ -55,8 +55,17 @@ services.factory("focusManager", function () {
 
         var itemToFocus = focusGroups[currentGroup][currentItemToFocus];
         itemToFocus.addClass('focused');
+        focusOnFirstFocusableItem(itemToFocus);
 
 
+    }
+
+    var focusOnFirstFocusableItem = function (divName) {
+//        $('#' + divName + ' [name]')[0].focus();
+        console.log("div: " + divName.attr('id'));
+        var first = $("#"+ divName.attr('id') + " :input:first");
+        first.focus();
+        console.log("first input div item: " + first.attr("id"));
     }
 
     return {
@@ -86,6 +95,7 @@ services.factory("focusManager", function () {
             if( focusGroup == currentGroup && lengthOfFocusGroup == 0 )
             {
                 element.addClass('focused');
+                focusOnFirstFocusableItem(element);
             }
 
         },
@@ -109,8 +119,10 @@ services.factory("focusManager", function () {
 
                 console.log("currentFocusIndex: " + currentFocusItemIndex[focusGroup]);
 
-                focusGroups[focusGroup][currentFocusItemIndex[focusGroup]].addClass('focused');
+                var elementToFocus = focusGroups[focusGroup][currentFocusItemIndex[focusGroup]];
+                elementToFocus.addClass('focused');
 
+                focusOnFirstFocusableItem(elementToFocus);
             }
 
         },
@@ -134,7 +146,9 @@ services.factory("focusManager", function () {
 
                 console.log("currentFocusIndex: " + currentFocusItemIndex[focusGroup]);
 
-                focusGroups[focusGroup][currentFocusItemIndex[focusGroup]].addClass('focused');
+                var elementToFocus = focusGroups[focusGroup][currentFocusItemIndex[focusGroup]];
+                elementToFocus.addClass('focused');
+                focusOnFirstFocusableItem(elementToFocus);
 
             }
         },

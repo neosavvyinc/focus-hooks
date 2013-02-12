@@ -128,11 +128,11 @@ angular.module('myApp.directives', [])
 
                     if( focusManager.isGroupActive(scope.managedGroup) )
                     {
-                        if( code == 9 && isShift ) {
+                        if( code == 37 ) {//&& isShift ) {
                             focusManager.reverseFocus(scope.managedGroup);
                             event.preventDefault();
                         }
-                        else if( code == 9 ) {
+                        else if( code == 39 ) {
                             focusManager.forwardFocus(scope.managedGroup);
                             event.preventDefault();
                         }
@@ -146,7 +146,7 @@ angular.module('myApp.directives', [])
                         }
                     }
 
-                    if( code == 9 || code == 40 || code == 38 ) {
+                    if( code == 39 || code == 40 || code == 38 || code == 37) {
                         event.preventDefault();
                     }
 
