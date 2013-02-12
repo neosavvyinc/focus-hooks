@@ -14,6 +14,50 @@ services.factory("focusManager", function () {
     };
     var currentFocusItemIndex = {
     };
+    var currentGroup = undefined;
+    var focusGroupCount = 0;
+
+    var removeAllFocusedItems = function() {
+        for ( var focusGroup in focusGroups) {
+            focusGroups[focusGroup][currentFocusItemIndex[focusGroup]].removeClass('focused');
+        }
+    }
+
+
+    var queueNextGroup = function() {
+
+        currentGroup = currentGroup + 1;
+        if( currentGroup > focusGroupCount - 1 )
+        {
+            currentGroup = 0;
+        }
+
+        removeAllFocusedItems();
+
+        var currentItemToFocus = currentFocusItemIndex[currentGroup] === undefined ? 0 : currentFocusItemIndex[currentGroup];
+
+        var itemToFocus = focusGroups[currentGroup][currentItemToFocus];
+        itemToFocus.addClass('focused');
+
+
+    }
+
+    var queuePreviousGroup = function() {
+
+        currentGroup = currentGroup - 1;
+        if( currentGroup < 0 ) {
+            currentGroup = focusGroupCount - 1;
+        }
+
+        removeAllFocusedItems();
+
+        var currentItemToFocus = currentFocusItemIndex[currentGroup] === undefined ? 0 : currentFocusItemIndex[currentGroup];
+
+        var itemToFocus = focusGroups[currentGroup][currentItemToFocus];
+        itemToFocus.addClass('focused');
+
+
+    }
 
     return {
         hasGroup: function( focusGroup ) {
@@ -22,10 +66,15 @@ services.factory("focusManager", function () {
 
         },
         addGroup: function( focusGroup ) {
+            focusGroupCount++;
 
             if( !this.hasGroup(focusGroup) ) {
                 focusGroups[focusGroup] = [];
                 currentFocusItemIndex[focusGroup] = 0;
+
+                if( currentGroup === undefined ) {
+                    currentGroup = focusGroup;
+                }
             }
 
         },
@@ -34,7 +83,8 @@ services.factory("focusManager", function () {
             var lengthOfFocusGroup = focusGroups[focusGroup].length;
             focusGroups[focusGroup][lengthOfFocusGroup] = element;
 
-            if( lengthOfFocusGroup == 0 ) {
+            if( focusGroup == currentGroup && lengthOfFocusGroup == 0 )
+            {
                 element.addClass('focused');
             }
 
@@ -42,41 +92,66 @@ services.factory("focusManager", function () {
         forwardFocus: function( focusGroup ) {
             console.log("forwarding focus");
 
-            if( !currentFocusItemIndex.hasOwnProperty(focusGroup) ) {
-                currentFocusItemIndex[focusGroup] = 0;
+            if( focusGroup === currentGroup )
+            {
+
+                if( !currentFocusItemIndex.hasOwnProperty(focusGroup) ) {
+                    currentFocusItemIndex[focusGroup] = 0;
+                }
+
+                focusGroups[focusGroup][currentFocusItemIndex[focusGroup]].removeClass('focused');
+
+                currentFocusItemIndex[focusGroup] = currentFocusItemIndex[focusGroup] + 1;
+
+                if( currentFocusItemIndex[focusGroup] >=  focusGroups[focusGroup].length) {
+                    currentFocusItemIndex[focusGroup] = 0;
+                }
+
+                console.log("currentFocusIndex: " + currentFocusItemIndex[focusGroup]);
+
+                focusGroups[focusGroup][currentFocusItemIndex[focusGroup]].addClass('focused');
+
             }
-
-            focusGroups[focusGroup][currentFocusItemIndex[focusGroup]].removeClass('focused');
-
-            currentFocusItemIndex[focusGroup] = currentFocusItemIndex[focusGroup] + 1;
-
-            if( currentFocusItemIndex[focusGroup] >=  focusGroups[focusGroup].length) {
-                currentFocusItemIndex[focusGroup] = 0;
-            }
-
-            console.log("currentFocusIndex: " + currentFocusItemIndex[focusGroup]);
-
-            focusGroups[focusGroup][currentFocusItemIndex[focusGroup]].addClass('focused');
 
         },
         reverseFocus: function( focusGroup ) {
             console.log("reversing focus");
 
-            if( !currentFocusItemIndex.hasOwnProperty(focusGroup) ) {
-                currentFocusItemIndex[focusGroup] = focusGroups[focusGroup].length;
+            if( focusGroup === currentGroup )
+            {
+
+                if( !currentFocusItemIndex.hasOwnProperty(focusGroup) ) {
+                    currentFocusItemIndex[focusGroup] = focusGroups[focusGroup].length;
+                }
+
+                focusGroups[focusGroup][currentFocusItemIndex[focusGroup]].removeClass('focused');
+
+                currentFocusItemIndex[focusGroup] = currentFocusItemIndex[focusGroup] - 1;
+
+                if( currentFocusItemIndex[focusGroup] < 0 ) {
+                    currentFocusItemIndex[focusGroup] = focusGroups[focusGroup].length - 1;
+                }
+
+                console.log("currentFocusIndex: " + currentFocusItemIndex[focusGroup]);
+
+                focusGroups[focusGroup][currentFocusItemIndex[focusGroup]].addClass('focused');
+
             }
+        },
+        activateNextGroup: function( focusGroup ) {
 
-            focusGroups[focusGroup][currentFocusItemIndex[focusGroup]].removeClass('focused');
+            console.log('activate next==============================');
 
-            currentFocusItemIndex[focusGroup] = currentFocusItemIndex[focusGroup] - 1;
+            setTimeout(queueNextGroup, 100);
 
-            if( currentFocusItemIndex[focusGroup] < 0 ) {
-                currentFocusItemIndex[focusGroup] = focusGroups[focusGroup].length - 1;
-            }
+        },
+        activatePreviousGroup: function() {
 
-            console.log("currentFocusIndex: " + currentFocusItemIndex[focusGroup]);
+            setTimeout(queuePreviousGroup, 100);
 
-            focusGroups[focusGroup][currentFocusItemIndex[focusGroup]].addClass('focused');
+        },
+        isGroupActive: function( managedGroup ) {
+            return managedGroup === currentGroup;
         },
         dumpGroups: function() {
 

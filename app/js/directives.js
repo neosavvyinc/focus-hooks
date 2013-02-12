@@ -117,6 +117,8 @@ angular.module('myApp.directives', [])
             link:function (scope, element, attrs) {
 
                 var tabListener = function(){
+
+
                     var code;
                     var isShift = event.shiftKey ? true : false;
 
@@ -124,14 +126,30 @@ angular.module('myApp.directives', [])
                         code = event.which;
                     }
 
-                    if( code == 9 && isShift ) {
-                        focusManager.reverseFocus(scope.managedGroup);
+                    if( focusManager.isGroupActive(scope.managedGroup) )
+                    {
+                        if( code == 9 && isShift ) {
+                            focusManager.reverseFocus(scope.managedGroup);
+                            event.preventDefault();
+                        }
+                        else if( code == 9 ) {
+                            focusManager.forwardFocus(scope.managedGroup);
+                            event.preventDefault();
+                        }
+                        else if( code == 40 ) {
+                            //down arrow
+                            focusManager.activateNextGroup();
+                        }
+                        else if ( code == 38 ) {
+                            //up arrow
+                            focusManager.activatePreviousGroup();
+                        }
+                    }
+
+                    if( code == 9 || code == 40 || code == 38 ) {
                         event.preventDefault();
                     }
-                    else if( code == 9 ) {
-                        focusManager.forwardFocus(scope.managedGroup);
-                        event.preventDefault();
-                    }
+
                 }
 
                 $(document).keydown(tabListener);
