@@ -101,7 +101,18 @@ angular.module('myApp.directives', [])
                     focusManager.addItemToGroup( scope.focusGroup, element );
                 }
 
-                focusManager.dumpGroups();
+                var focusListener = function() {
+                    console.log("focus listener");
+                    focusManager.setFocusForGroup(scope.focusGroup, element);
+                }
+
+                var focusOutListener = function() {
+                    element.removeClass('focused');
+                }
+
+                element.focusin(focusListener);
+                element.focusout(focusOutListener);
+
             }
         }
 
@@ -116,7 +127,7 @@ angular.module('myApp.directives', [])
             },
             link:function (scope, element, attrs) {
 
-                var tabListener = function(){
+                var keyListener = function(){
 
 
                     var code;
@@ -152,7 +163,8 @@ angular.module('myApp.directives', [])
 
                 }
 
-                $(document).keydown(tabListener);
+                $(document).keydown(keyListener);
+
 
             }
         }

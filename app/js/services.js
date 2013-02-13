@@ -1,10 +1,6 @@
 'use strict';
 
-/* Services */
 
-
-// Demonstrate how to register services
-// In this case it is a simple value service.
 var services = angular.module('myApp.services', []).
   value('version', '0.1');
 
@@ -61,7 +57,6 @@ services.factory("focusManager", function () {
     }
 
     var focusOnFirstFocusableItem = function (divName) {
-//        $('#' + divName + ' [name]')[0].focus();
         console.log("div: " + divName.attr('id'));
         var first = $("#"+ divName.attr('id') + " :input:first");
         first.focus();
@@ -164,17 +159,30 @@ services.factory("focusManager", function () {
             setTimeout(queuePreviousGroup, 100);
 
         },
-        isGroupActive: function( managedGroup ) {
-            return managedGroup === currentGroup;
-        },
-        dumpGroups: function() {
+        setFocusForGroup:function( managedGroup, element ) {
 
-            for ( var group in focusGroups) {
-                console.log(group);
-                console.log(focusGroups[group].length);
+//            currentGroup = managedGroup;
+
+            var group, key, item, idx;
+
+            removeAllFocusedItems();
+
+            group = focusGroups[managedGroup];
+
+            var indexIntoGroup = 0;
+            for ( key in group ) {
+                indexIntoGroup = indexIntoGroup + 1;
+                item = focusGroups[managedGroup][key];
+                if( item.attr('id') === element.attr('id') ) {
+                    item.addClass('focused');
+                }
+
             }
 
 
+        },
+        isGroupActive: function( managedGroup ) {
+            return managedGroup === currentGroup;
         }
     }
 
