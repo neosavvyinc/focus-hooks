@@ -139,7 +139,7 @@ services.factory("focusManager", function () {
                     currentFocusItemIndex[focusGroup] = focusGroups[focusGroup].length - 1;
                 }
 
-                console.log("currentFocusIndex: " + currentFocusItemIndex[focusGroup]);
+                console.log("+++++++currentFocusIndex: " + currentFocusItemIndex[focusGroup]);
 
                 var elementToFocus = focusGroups[focusGroup][currentFocusItemIndex[focusGroup]];
                 elementToFocus.addClass('focused');
@@ -161,7 +161,10 @@ services.factory("focusManager", function () {
         },
         setFocusForGroup:function( managedGroup, element ) {
 
-//            currentGroup = managedGroup;
+            console.log("setting focus.....");
+
+            currentGroup = managedGroup;
+
 
             var group, key, item, idx;
 
@@ -173,7 +176,9 @@ services.factory("focusManager", function () {
             for ( key in group ) {
                 indexIntoGroup = indexIntoGroup + 1;
                 item = focusGroups[managedGroup][key];
+
                 if( item.attr('id') === element.attr('id') ) {
+                    currentFocusItemIndex[currentGroup] = indexIntoGroup - 1;
                     item.addClass('focused');
                 }
 
